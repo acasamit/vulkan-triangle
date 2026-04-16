@@ -14,12 +14,14 @@ public:
 
 private:
 	GLFWwindow* window;
+	VkInstance instance;
 
+	// vk_main.cpp
 	void initWindow();
-
 	void initVulkan();
-
 	void mainLoop();
-
 	void cleanup();
+
+	// vk_create.cpp
+	void createInstance();
 };

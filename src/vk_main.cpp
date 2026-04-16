@@ -17,7 +17,7 @@ void VulkanEngine::initWindow() {
 }
 
 void VulkanEngine::initVulkan() {
-
+	createInstance();
 }
 
 void VulkanEngine::mainLoop() {
@@ -27,7 +27,8 @@ void VulkanEngine::mainLoop() {
 }
 
 void VulkanEngine::cleanup() {
-	glfwDestroyWindow(window);
+	vkDestroyInstance(instance, nullptr);
 
+	glfwDestroyWindow(window);
 	glfwTerminate();
 }
