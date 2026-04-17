@@ -20,6 +20,7 @@ void VulkanEngine::initVulkan() {
 	createInstance();
 	setupDebugMessenger();
 	pickPhysicalDevice();
+	createLogicalDevice();
 }
 
 void VulkanEngine::mainLoop() {
@@ -29,6 +30,8 @@ void VulkanEngine::mainLoop() {
 }
 
 void VulkanEngine::cleanup() {
+	vkDestroyDevice(logicalDevice, nullptr);
+
 	if (enableValidationLayers) {
 		DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
 	}
