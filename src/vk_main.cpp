@@ -18,6 +18,7 @@ void VulkanEngine::initWindow() {
 
 void VulkanEngine::initVulkan() {
 	createInstance();
+	setupDebugMessenger();
 }
 
 void VulkanEngine::mainLoop() {
@@ -27,6 +28,10 @@ void VulkanEngine::mainLoop() {
 }
 
 void VulkanEngine::cleanup() {
+	if (enableValidationLayers) {
+		DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+	}
+
 	vkDestroyInstance(instance, nullptr);
 
 	glfwDestroyWindow(window);

@@ -1,8 +1,6 @@
 NAME        = vulkan_engine
 
 CXX         = c++
-CXXFLAGS    = -std=c++20 -I include
-LDFLAGS     = -lvulkan -lglfw
 
 SRC_DIR     = src
 OBJ_DIR     = obj
@@ -11,7 +9,18 @@ INC_DIR     = include
 SRCS        = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS        = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
-all: $(NAME)
+LDFLAGS     = -lvulkan -lglfw
+
+DEBUG_FLAGS   = -std=c++20 -I include
+RELEASE_FLAGS = -std=c++20 -I include -DNDEBUG
+
+all: debug
+
+debug: CXXFLAGS = $(DEBUG_FLAGS)
+debug: $(NAME)
+
+release: CXXFLAGS = $(RELEASE_FLAGS)
+release: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
@@ -28,4 +37,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all debug release clean fclean re
