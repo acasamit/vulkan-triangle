@@ -7,6 +7,7 @@
 #include <cstring>
 #include <vector>
 #include <optional>
+#include <set>
 
 // window size
 const uint32_t WIDTH = 800;
@@ -24,9 +25,10 @@ const std::vector<const char*> validationLayers = {
 
 struct QueueFamilyIndices {
 	std::optional<uint32_t> graphicsFamily;
+	std::optional<uint32_t> presentFamily;
 
 	bool isComplete() {
-		return graphicsFamily.has_value();
+		return graphicsFamily.has_value() && presentFamily.has_value();
 	}
 };
 
@@ -38,9 +40,11 @@ private:
 	GLFWwindow* window;
 	VkInstance instance;
 	VkDebugUtilsMessengerEXT debugMessenger;
+	VkSurfaceKHR surface;
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	VkDevice logicalDevice;
 	VkQueue graphicsQueue;
+	VkQueue presentQueue;
 
 	// Debug
 	static VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
@@ -60,6 +64,9 @@ private:
 	void populateAppInfo(VkApplicationInfo& appInfo);
 	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 	std::vector<const char*> getRequiredExtensions();
+
+	// vk_surface.cpp
+	void createSurface();
 
 	// vk_device.cpp
 	void pickPhysicalDevice();

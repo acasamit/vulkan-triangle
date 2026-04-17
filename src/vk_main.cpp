@@ -19,6 +19,7 @@ void VulkanEngine::initWindow() {
 void VulkanEngine::initVulkan() {
 	createInstance();
 	setupDebugMessenger();
+	createSurface();
 	pickPhysicalDevice();
 	createLogicalDevice();
 }
@@ -36,6 +37,7 @@ void VulkanEngine::cleanup() {
 		DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
 	}
 
+	vkDestroySurfaceKHR(instance, surface, nullptr);
 	vkDestroyInstance(instance, nullptr);
 
 	glfwDestroyWindow(window);
