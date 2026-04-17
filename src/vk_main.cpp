@@ -19,6 +19,7 @@ void VulkanEngine::initWindow() {
 void VulkanEngine::initVulkan() {
 	createInstance();
 	setupDebugMessenger();
+	pickPhysicalDevice();
 }
 
 void VulkanEngine::mainLoop() {
