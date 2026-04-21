@@ -23,6 +23,7 @@ void VulkanEngine::initVulkan() {
 	pickPhysicalDevice();
 	createLogicalDevice();
 	createSwapChain();
+	createImageViews();
 }
 
 void VulkanEngine::mainLoop() {
@@ -32,6 +33,10 @@ void VulkanEngine::mainLoop() {
 }
 
 void VulkanEngine::cleanup() {
+	for (auto imageView : swapChainImageViews) {
+		vkDestroyImageView(logicalDevice, imageView, nullptr);
+	}
+
 	vkDestroySwapchainKHR(logicalDevice, swapChain, nullptr);
 	vkDestroyDevice(logicalDevice, nullptr);
 
