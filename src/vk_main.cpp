@@ -24,6 +24,7 @@ void VulkanEngine::initVulkan() {
 	createLogicalDevice();
 	createSwapChain();
 	createImageViews();
+	createGraphicsPipeline();
 }
 
 void VulkanEngine::mainLoop() {

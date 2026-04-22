@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <limits>
 #include <algorithm>
+#include <fstream>
 
 // window size
 const uint32_t WIDTH = 800;
@@ -101,4 +102,11 @@ private:
 
 	// vk_image_views.cpp
 	void createImageViews();
+
+	// vk_graphic_pipeline.cpp
+	void createGraphicsPipeline();
+
+	// vk_shaders.cpp
+	static std::vector<char> readFile(const std::string& filename);
+	VkShaderModule createShaderModule(const std::vector<char>& code);
 };
