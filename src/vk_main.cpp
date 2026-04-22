@@ -34,6 +34,8 @@ void VulkanEngine::mainLoop() {
 }
 
 void VulkanEngine::cleanup() {
+	vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
+
 	for (auto imageView : swapChainImageViews) {
 		vkDestroyImageView(logicalDevice, imageView, nullptr);
 	}

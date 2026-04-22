@@ -12,6 +12,7 @@
 #include <limits>
 #include <algorithm>
 #include <fstream>
+#include <array>
 
 // window size
 const uint32_t WIDTH = 800;
@@ -46,6 +47,12 @@ struct SwapChainSupportDetails {
 	std::vector<VkPresentModeKHR> presentModes;
 };
 
+struct ShaderStageResult {
+	std::array<VkPipelineShaderStageCreateInfo, 2> stages;
+	VkShaderModule vertModule;
+	VkShaderModule fragModule;
+};
+
 class VulkanEngine {
 public:
 	void run();
@@ -64,6 +71,7 @@ private:
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
 	std::vector<VkImageView> swapChainImageViews;
+	VkPipelineLayout pipelineLayout;
 
 	// Debug
 	static VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
@@ -104,7 +112,16 @@ private:
 	void createImageViews();
 
 	// vk_graphic_pipeline.cpp
-	void createGraphicsPipeline();
+	ShaderStageResult createShaderStages();
+	VkPipelineVertexInputStateCreateInfo    createVertexInputInfo();
+	VkPipelineInputAssemblyStateCreateInfo  createInputAssembly();
+	VkPipelineViewportStateCreateInfo       createViewportState();
+	VkPipelineDynamicStateCreateInfo        createDynamicState(std::vector<VkDynamicState>& dynamicStates);
+	VkPipelineRasterizationStateCreateInfo  createRasterizerState();
+	VkPipelineMultisampleStateCreateInfo    createMultisamplingState();
+	VkPipelineColorBlendStateCreateInfo     createColorBlendState(VkPipelineColorBlendAttachmentState& attachment);
+	void                                    createPipelineLayout();
+	void                                    createGraphicsPipeline();
 
 	// vk_shaders.cpp
 	static std::vector<char> readFile(const std::string& filename);
