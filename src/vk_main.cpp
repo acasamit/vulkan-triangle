@@ -27,6 +27,7 @@ void VulkanEngine::initVulkan() {
 	createRenderPass();
 	createGraphicsPipeline();
 	createFramebuffers();
+	createCommandPool();
 }
 
 void VulkanEngine::mainLoop() {
@@ -36,6 +37,8 @@ void VulkanEngine::mainLoop() {
 }
 
 void VulkanEngine::cleanup() {
+	vkDestroyCommandPool(logicalDevice, commandPool, nullptr);
+
 	for (auto framebuffer : swapChainFramebuffers) {
 		vkDestroyFramebuffer(logicalDevice, framebuffer, nullptr);
 	}

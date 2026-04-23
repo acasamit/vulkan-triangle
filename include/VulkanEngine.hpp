@@ -75,6 +75,7 @@ private:
 	VkPipelineLayout pipelineLayout;
 	VkPipeline graphicsPipeline;
 	std::vector<VkFramebuffer> swapChainFramebuffers;
+	VkCommandPool commandPool;
 
 	// Debug
 	static VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
@@ -138,4 +139,7 @@ private:
 
 	// vk_framebuffer.cpp
 	void createFramebuffers();
+
+	// vk_command.cpp
+	void createCommandPool();
 };
