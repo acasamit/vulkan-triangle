@@ -73,6 +73,7 @@ private:
 	std::vector<VkImageView> swapChainImageViews;
 	VkRenderPass renderPass;
 	VkPipelineLayout pipelineLayout;
+	VkPipeline graphicsPipeline;
 
 	// Debug
 	static VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);

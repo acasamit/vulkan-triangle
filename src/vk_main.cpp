@@ -35,6 +35,7 @@ void VulkanEngine::mainLoop() {
 }
 
 void VulkanEngine::cleanup() {
+	vkDestroyPipeline(logicalDevice, graphicsPipeline, nullptr);
 	vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
 	vkDestroyRenderPass(logicalDevice, renderPass, nullptr);
 
