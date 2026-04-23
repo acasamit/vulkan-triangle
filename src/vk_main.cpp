@@ -28,6 +28,7 @@ void VulkanEngine::initVulkan() {
 	createGraphicsPipeline();
 	createFramebuffers();
 	createCommandPool();
+	createCommandBuffer();
 }
 
 void VulkanEngine::mainLoop() {
