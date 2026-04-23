@@ -71,6 +71,7 @@ private:
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
 	std::vector<VkImageView> swapChainImageViews;
+	VkRenderPass renderPass;
 	VkPipelineLayout pipelineLayout;
 
 	// Debug
@@ -110,6 +111,12 @@ private:
 
 	// vk_image_views.cpp
 	void createImageViews();
+
+	// vk_render_passes.cpp
+	VkAttachmentDescription createColorAttachmentDescription();
+	VkAttachmentReference createColorAttachmentReference();
+	VkSubpassDescription createSubpass(const VkAttachmentReference& colorAttachmentRef);
+	void createRenderPass();
 
 	// vk_graphic_pipeline.cpp
 	ShaderStageResult createShaderStages();
