@@ -57,6 +57,8 @@ struct ShaderStageResult {
 
 class VulkanEngine {
 public:
+	bool framebufferResized = false;
+
 	void run();
 
 private:
@@ -119,6 +121,8 @@ private:
 	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 	void createSwapChain();
+	void cleanupSwapChain();
+	void recreateSwapChain();
 
 	// vk_image_views.cpp
 	void createImageViews();

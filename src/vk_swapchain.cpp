@@ -113,3 +113,33 @@ void VulkanEngine::createSwapChain() {
 	swapChainImageFormat = surfaceFormat.format;
 	swapChainExtent = extent;
 }
+
+void VulkanEngine::cleanupSwapChain() {
+	for (auto framebuffer : swapChainFramebuffers) {
+		vkDestroyFramebuffer(logicalDevice, framebuffer, nullptr);
+	}
+
+	for (auto imageView : swapChainImageViews) {
+		vkDestroyImageView(logicalDevice, imageView, nullptr);
+	}
+
+	vkDestroySwapchainKHR(logicalDevice, swapChain, nullptr);
+}
+
+void VulkanEngine::recreateSwapChain() {
+	int width = 0, height = 0;
+
+	glfwGetFramebufferSize(window, &width, &height);
+	while (width == 0 || height == 0) { // pause if the window is minimized
+		glfwGetFramebufferSize(window, &width, &height);
+		glfwWaitEvents();
+	}
+
+	vkDeviceWaitIdle(logicalDevice);
+
+	cleanupSwapChain();
+
+	createSwapChain();
+	createImageViews();
+	createFramebuffers();
+}

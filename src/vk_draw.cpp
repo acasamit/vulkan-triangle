@@ -16,8 +16,13 @@ uint32_t VulkanEngine::acquireNextImage() {
 		&imageIndex
 	);
 
-	if (result != VK_SUCCESS)
+	if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || framebufferResized) {
+		framebufferResized = false;
+		recreateSwapChain();
+		return UINT32_MAX;
+	} else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
 		throw std::runtime_error("failed to acquire swap chain image!");
+	}
 
 	return imageIndex;
 }
@@ -68,6 +73,8 @@ void VulkanEngine::drawFrame() {
 	waitForFrame();
 
 	uint32_t imageIndex = acquireNextImage();
+	if (imageIndex == UINT32_MAX) return; // swap chain need to be recreated
+
 	recordCurrentFrame(imageIndex);
 	submitCurrentFrame();
 	presentCurrentFrame(imageIndex);

@@ -12,8 +12,14 @@ void VulkanEngine::initWindow() {
 
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API); // we are not using opengl
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // disable resizable window
-
+	
 	window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan - Triangle", nullptr, nullptr);
+	glfwSetWindowUserPointer(window, this);
+}
+
+static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
+	auto app = reinterpret_cast<VulkanEngine*>(glfwGetWindowUserPointer(window));
+	app->framebufferResized = true;
 }
 
 void VulkanEngine::initVulkan() {
@@ -42,6 +48,8 @@ void VulkanEngine::mainLoop() {
 }
 
 void VulkanEngine::cleanup() {
+	cleanupSwapChain();
+
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
 		vkDestroySemaphore(logicalDevice, renderFinishedSemaphores[i], nullptr);
 		vkDestroySemaphore(logicalDevice, imageAvailableSemaphores[i], nullptr);
@@ -50,18 +58,10 @@ void VulkanEngine::cleanup() {
 
 	vkDestroyCommandPool(logicalDevice, commandPool, nullptr);
 
-	for (auto framebuffer : swapChainFramebuffers) {
-		vkDestroyFramebuffer(logicalDevice, framebuffer, nullptr);
-	}
 	vkDestroyPipeline(logicalDevice, graphicsPipeline, nullptr);
 	vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
 	vkDestroyRenderPass(logicalDevice, renderPass, nullptr);
 
-	for (auto imageView : swapChainImageViews) {
-		vkDestroyImageView(logicalDevice, imageView, nullptr);
-	}
-
-	vkDestroySwapchainKHR(logicalDevice, swapChain, nullptr);
 	vkDestroyDevice(logicalDevice, nullptr);
 
 	if (enableValidationLayers) {
