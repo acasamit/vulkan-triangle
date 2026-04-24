@@ -77,6 +77,9 @@ private:
 	std::vector<VkFramebuffer> swapChainFramebuffers;
 	VkCommandPool commandPool;
 	VkCommandBuffer commandBuffer;
+	VkSemaphore imageAvailableSemaphore;
+	VkSemaphore renderFinishedSemaphore;
+	VkFence inFlightFence;
 
 	// Debug
 	static VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
@@ -120,6 +123,7 @@ private:
 	VkAttachmentDescription createColorAttachmentDescription();
 	VkAttachmentReference createColorAttachmentReference();
 	VkSubpassDescription createSubpass(const VkAttachmentReference& colorAttachmentRef);
+	VkSubpassDependency createDependency();
 	void createRenderPass();
 
 	// vk_graphic_pipeline.cpp
@@ -145,4 +149,15 @@ private:
 	void createCommandPool();
 	void createCommandBuffer();
 	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+
+	// vk_sync.cpp
+	void createSyncObjects();
+
+	// vk_draw.cpp
+	void waitForFrame();
+	uint32_t acquireNextImage();
+	void recordCurrentFrame(uint32_t imageIndex);
+	void submitCurrentFrame();
+	void presentCurrentFrame(uint32_t imageIndex);
+	void drawFrame();
 };

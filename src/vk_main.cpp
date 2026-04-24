@@ -29,15 +29,23 @@ void VulkanEngine::initVulkan() {
 	createFramebuffers();
 	createCommandPool();
 	createCommandBuffer();
+	createSyncObjects();
 }
 
 void VulkanEngine::mainLoop() {
 	while (!glfwWindowShouldClose(window)) {
 			glfwPollEvents();
+			drawFrame();
 	}
+
+	vkDeviceWaitIdle(logicalDevice);
 }
 
 void VulkanEngine::cleanup() {
+	vkDestroySemaphore(logicalDevice, imageAvailableSemaphore, nullptr);
+	vkDestroySemaphore(logicalDevice, renderFinishedSemaphore, nullptr);
+	vkDestroyFence(logicalDevice, inFlightFence, nullptr);
+
 	vkDestroyCommandPool(logicalDevice, commandPool, nullptr);
 
 	for (auto framebuffer : swapChainFramebuffers) {

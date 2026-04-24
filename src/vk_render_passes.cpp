@@ -28,10 +28,22 @@ VkSubpassDescription VulkanEngine::createSubpass(const VkAttachmentReference& co
 	return subpass;
 }
 
+VkSubpassDependency VulkanEngine::createDependency() {
+	VkSubpassDependency dependency{};
+	dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+	dependency.dstSubpass = 0;
+	dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependency.srcAccessMask = 0;
+	dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+	return dependency;
+}
+
 void VulkanEngine::createRenderPass() {
 	VkAttachmentDescription colorAttachment = createColorAttachmentDescription();
 	VkAttachmentReference colorAttachmentRef = createColorAttachmentReference();
 	VkSubpassDescription subpass = createSubpass(colorAttachmentRef);
+	VkSubpassDependency dependency = createDependency();
 
 	VkRenderPassCreateInfo renderPassInfo{};
 	renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
@@ -39,6 +51,8 @@ void VulkanEngine::createRenderPass() {
 	renderPassInfo.pAttachments = &colorAttachment;
 	renderPassInfo.subpassCount = 1;
 	renderPassInfo.pSubpasses = &subpass;
+	renderPassInfo.dependencyCount = 1;
+	renderPassInfo.pDependencies = &dependency;
 
 	VkResult result = vkCreateRenderPass(logicalDevice, &renderPassInfo, nullptr, &renderPass);
 	if (result != VK_SUCCESS) throw std::runtime_error("failed to create render pass!");
